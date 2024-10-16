@@ -12,6 +12,20 @@
   * dependencies
     * @cogeotiff/core bumped from ^9.0.2 to ^9.0.3
 
+## [9.0.4](https://github.com/blacha/cogeotiff/compare/cli-v9.0.3...cli-v9.0.4) (2024-10-16)
+
+
+### Bug Fixes
+
+* **cli:** correctly show "not loaded" when strings are not loaded ([#1309](https://github.com/blacha/cogeotiff/issues/1309)) ([fdbd4e9](https://github.com/blacha/cogeotiff/commit/fdbd4e975ac5f27c4e36438e0f1ff776e7db7f5a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @cogeotiff/core bumped from ^9.0.3 to ^9.0.4
+
 ## [9.0.2](https://github.com/blacha/cogeotiff/compare/cli-v9.0.1...cli-v9.0.2) (2023-12-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.0.4](https://github.com/blacha/cogeotiff/compare/core-v9.0.3...core-v9.0.4) (2024-10-16)
+
+
+### Bug Fixes
+
+* **cli:** correctly show "not loaded" when strings are not loaded ([#1309](https://github.com/blacha/cogeotiff/issues/1309)) ([fdbd4e9](https://github.com/blacha/cogeotiff/commit/fdbd4e975ac5f27c4e36438e0f1ff776e7db7f5a))
+
 ## [9.0.3](https://github.com/blacha/cogeotiff/compare/core-v9.0.2...core-v9.0.3) (2024-01-08)
 
 

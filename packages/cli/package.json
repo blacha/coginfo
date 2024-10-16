@@ -1,6 +1,6 @@
 {
   "name": "@cogeotiff/cli",
-  "version": "9.0.3",
+  "version": "9.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/blacha/cogeotiff.git",
@@ -21,7 +21,7 @@
     "@chunkd/middleware": "^11.0.0",
     "@chunkd/fs": "^11.0.2",
     "@chunkd/fs-aws": "^11.0.2",
-    "@cogeotiff/core": "^9.0.3",
+    "@cogeotiff/core": "^9.0.4",
     "@linzjs/tracing": "^1.1.1",
     "ansi-colors": "^4.1.1",
     "cmd-ts": "^0.13.0",
