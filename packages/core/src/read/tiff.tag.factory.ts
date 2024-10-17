@@ -115,6 +115,14 @@ export function createTag(tiff: Tiff, view: DataViewOffset, offset: number): Tag
 
   const dataOffset = getUint(view, offset + 4 + tiff.ifdConfig.pointer, tiff.ifdConfig.pointer, tiff.isLittleEndian);
 
+  // If we already have the bytes in the view read them in
+  if (hasBytes(view, dataOffset, dataLength)) {
+    if (dataCount <= tiff.defaultTagInitCount) {
+      const value = readValue(tiff, tagId, view, dataOffset - view.sourceOffset, dataType, dataCount);
+      return { type: 'inline', id: tagId, name: TiffTag[tagId], count: dataCount, value, dataType, tagOffset: offset };
+    }
+  }
+
   switch (tagId) {
     case TiffTag.TileOffsets:
     case TiffTag.TileByteCounts:
@@ -131,15 +139,11 @@ export function createTag(tiff: Tiff, view: DataViewOffset, offset: number): Tag
         value: [],
         tagOffset: offset,
       };
-      // Some offsets are quite long and don't need to read them often, so only read the tags we are interested in when we need to
-      if (tagId === TiffTag.TileOffsets && hasBytes(view, dataOffset, dataLength)) setBytes(tag, view);
+      // Some offsets are massive and we don't need to read them often, so only read the tags we are interested in when we need to
+      if (tag.id === TiffTag.TileOffsets || tag.id === TiffTag.TileByteCounts) {
+        if (hasBytes(view, dataOffset, dataLength)) setBytes(tag, view);
+      }
       return tag;
-  }
-
-  // If we already have the bytes in the view read them in
-  if (hasBytes(view, dataOffset, dataLength)) {
-    const value = readValue(tiff, tagId, view, dataOffset - view.sourceOffset, dataType, dataCount);
-    return { type: 'inline', id: tagId, name: TiffTag[tagId], count: dataCount, value, dataType, tagOffset: offset };
   }
 
   return { type: 'lazy', id: tagId, name: TiffTag[tagId], count: dataCount, dataOffset, dataType, tagOffset: offset };
@@ -181,7 +185,7 @@ export function setBytes(tag: TagOffset, view: DataViewOffset): void {
 }
 
 /** Partially fetch the values of a {@link TagOffset} and return the value for the offset */
-export async function getValueAt(tiff: Tiff, tag: TagOffset, index: number): Promise<number> {
+export async function getOffsetValueAt(tiff: Tiff, tag: TagOffset, index: number): Promise<number> {
   if (index > tag.count || index < 0) throw new Error('TagOffset: out of bounds :' + index);
   if (tag.value[index] != null) return tag.value[index];
   const dataTypeSize = getTiffTagSize(tag.dataType);
@@ -197,6 +201,23 @@ export async function getValueAt(tiff: Tiff, tag: TagOffset, index: number): Pro
   }
 
   // Skip type conversion to array by using undefined tiff tag id
+  const value = readValue(tiff, undefined, tag.view, index * dataTypeSize, tag.dataType, 1);
+  if (typeof value !== 'number') throw new Error('Value is not a number');
+  tag.value[index] = value;
+  return value;
+}
+
+/** Partially read the value of a {@link TagOffset} and return the value for the offset */
+export function getOffsetValueAtSync(tiff: Tiff, tag: TagOffset, index: number): number | null {
+  if (index > tag.count || index < 0) throw new Error('TagOffset: out of bounds :' + index);
+  // Value already loaded
+  if (tag.value[index] != null) return tag.value[index];
+
+  // data has not been loaded so cannot get value
+  if (tag.view == null) return null;
+
+  const dataTypeSize = getTiffTagSize(tag.dataType);
+
   const value = readValue(tiff, undefined, tag.view, index * dataTypeSize, tag.dataType, 1);
   if (typeof value !== 'number') throw new Error('Value is not a number');
   tag.value[index] = value;

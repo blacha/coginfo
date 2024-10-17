@@ -16,6 +16,12 @@ export class Tiff {
   static DefaultReadSize = 16 * 1024;
   /** Read 16KB blocks at a time */
   defaultReadSize = Tiff.DefaultReadSize;
+
+  /** Do not initialize tags that have greater than this many records see {@link createTag} */
+  static DefaultTagInitCount = 1024;
+  /** Do not initialize tags that are greater than this size see {@link createTag} */
+  defaultTagInitCount = Tiff.DefaultTagInitCount;
+
   /** Where this cog is fetching its data from */
   source: Source;
   /** Big or small Tiff */

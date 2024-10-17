@@ -1,12 +1,14 @@
 import { fsa, FsHttp } from '@chunkd/fs';
 import { SourceCache, SourceChunk } from '@chunkd/middleware';
+import { Tiff } from '@cogeotiff/core';
 import { log } from '@linzjs/tracing';
 
 import { FetchLog } from './fs.js';
 
 // Cache the last 10MB of chunks for reuse
 export const sourceCache = new SourceCache({ size: 10 * 1024 * 1024 });
-export const sourceChunk = new SourceChunk({ size: 32 * 1024 });
+export const sourceChunk = new SourceChunk({ size: 64 * 1024 });
+Tiff.DefaultReadSize = sourceChunk.chunkSize;
 
 export function setupLogger(cfg: { verbose?: boolean; extraVerbose?: boolean }): typeof log {
   if (cfg.verbose) {
