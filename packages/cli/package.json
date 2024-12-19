@@ -25,7 +25,7 @@
     "@linzjs/tracing": "^1.1.1",
     "ansi-colors": "^4.1.1",
     "cmd-ts": "^0.13.0",
-    "p-limit": "^4.0.0",
+    "p-limit": "^6.2.0",
     "pretty-json-log": "^1.4.0"
   },
   "devDependencies": {
