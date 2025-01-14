@@ -19,7 +19,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^20.0.0"
+    "@types/node": "^22.10.6"
   },
   "publishConfig": {
     "access": "public"
